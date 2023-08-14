@@ -1,66 +1,3 @@
-// import puppeteer from 'puppeteer';
-// import 'dotenv/config';
-
-// let browser = null;
-// let page = null;
-// const usernameSelector = '#usernamehoustondevtestpimshosting\\.com'
-// const passwordSelector = '#passwordhoustondevtestpimshosting\\.com'
-// const loginBtnSelector = '#loginButton > button'
-// const menuBtnSelector = '#afToolbarMenu > a'
-
-// beforeAll(async () => {
-//   await delay(5000);
-
-//   browser = await puppeteer.launch({
-//     headless: false,
-//     slowMo: 20,
-//     devtools: true,
-//     defaultViewport: false
-//   });
-
-//   page = await browser.newPage();
-
-//   await page.goto(process.env.APP_URL, {waitUntil: 'domcontentloaded'});
-
-//   await page.waitForSelector(usernameSelector)
-//   await page.type(usernameSelector, `${process.env.USER}@omega365.com`);
-
-//   await page.waitForSelector(passwordSelector);
-//   await page.type(passwordSelector, process.env.PASSWORD);
-  
-//   await page.waitForSelector(loginBtnSelector)
-//   await page.click(loginBtnSelector);
-
-//   await page.waitForSelector(menuBtnSelector)
-//   await page.click(menuBtnSelector)
-  
-// })
-
-// function delay(ms) {
-//   return new Promise((resolve) => {
-//     setTimeout(resolve, ms)
-//   })
-// }
-
-// afterAll(async () => {
-//   await browser.close()
-// })
-
-
-// describe('Page menu', () => {
-  
-//   test('should show menu', async() => {
-
-//     let menu = await page.$("#mega-menu")
-
-//     let menuClass = await menu.evaluate((el) => {
-//       return el.className.split(' ').includes('show')
-//     })
-
-//     expect(menuClass).toBeTruthy();
-//   })
-// })
-
 // describe('Punch Item app', () => {
   
 //   let punchItemBtnSelector = 'div[data-value="Punch Items"]'
@@ -93,6 +30,7 @@
 import puppeteer from "puppeteer";
 import LoginAccount from "./automation/loginAccount";
 import OpenMenu from "./automation/openMenu";
+import ProjectExplorer from "./automation/CMS/ProjectExplorer";
 
 function delay(ms) {
   return new Promise((resolve) => {
@@ -104,7 +42,7 @@ let browser = null;
 let page = null;
 let loginAccount = null;
 
-beforeAll(async() => {
+beforeAll(async() => { 
   await delay(3000);
   browser = await puppeteer.launch({
     headless: false,
@@ -121,7 +59,8 @@ describe('Webpage access', () => {
   test('should able to login', async () => {
 
     const welcome = await loginAccount.login(`${process.env.USER}@omega365.com`, process.env.PASSWORD);
-    expect(welcome).toContain('Welcome');
+
+    expect(welcome).toBeTruthy();
   })
 
   
@@ -134,6 +73,14 @@ describe('test', () => {
     const menu = await menuBtn.showMenu()
     
     expect(menu).toBeTruthy();
+  })
+})
+
+describe('test project explorer', () => {
+  test('should able to navigate to app', async() => {
+    let projectExplorer = ProjectExplorer(page)
+    const title = await projectExplorer.navigateToApp();
+    expect(title).toContain('Project Explorer');
   })
 })
 

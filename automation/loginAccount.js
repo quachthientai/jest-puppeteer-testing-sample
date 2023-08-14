@@ -6,9 +6,9 @@ class LoginAccount {
       this.page = page;
       this.loginBtn = '#loginButton > button';
       this.loginBody = '.login-panel';
-      this.usernameField = '#usernamehoustondevtestpimshosting\\.com';
-      this.passwordField = '#passwordhoustondevtestpimshosting\\.com';
-      this.welcomeBody = '#idForWelcome'
+      this.usernameField = '#usernameoilsearchdevpimshosting\\.com';
+      this.passwordField = '#passwordoilsearchdevpimshosting\\.com';
+      this.mainPageLogo = 'div[data-object-id="dsLogo"] > img'
    }
 
    async login(username, password) {
@@ -23,13 +23,13 @@ class LoginAccount {
       
          //Login button click
          await this.page.click(this.loginBtn);
-         await this.page.waitForSelector(this.welcomeBody);
+         await this.page.waitForSelector(this.mainPageLogo);
          
-         const welcome = await this.page.$eval(this.welcomeBody, el => {
-            return el.textContent
+         const hasLogo = await this.page.$eval(this.mainPageLogo, el => {
+            return el.className.split(' ').includes('domain-pic');
          })
 
-         return welcome
+         return hasLogo
       } catch (err) {
          console.error(err);
       }
