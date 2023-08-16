@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-class LoginAccount {
+class Login {
    constructor(page) {
       this.url = process.env.APP_URL;
       this.page = page;
@@ -10,8 +10,8 @@ class LoginAccount {
       this.passwordField = '#passwordoilsearchdevpimshosting\\.com';
       this.mainPageLogo = 'div[data-object-id="dsLogo"] > img'
    }
-
-   async login(username, password) {
+   
+   async access(username, password) {
       try {
          //Go to login page and wait for login body
          await this.page.goto(this.url);
@@ -25,11 +25,14 @@ class LoginAccount {
          await this.page.click(this.loginBtn);
          await this.page.waitForSelector(this.mainPageLogo);
          
+         
          const hasLogo = await this.page.$eval(this.mainPageLogo, el => {
             return el.className.split(' ').includes('domain-pic');
          })
 
          return hasLogo
+         
+         
       } catch (err) {
          console.error(err);
       }
@@ -37,5 +40,5 @@ class LoginAccount {
 }
 
 export default function(page) {
-   return new LoginAccount(page)
+   return new Login(page)
 }
